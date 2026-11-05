@@ -16,6 +16,8 @@ forced RLS, consent grant/withdrawal with a tracked erasure workflow, versioned 
 launch-gate registry, crisis-resource loader (ships empty), rate limiting, and an offline ML learning exercise under `ml/`.
 See `docs/PLAN.md` (design) and `docs/M1_STATUS.md` (what is verified vs not).
 
+**Live demo:** https://aapka-link.netlify.app
+
 ## Run the tests
 ```bash
 pip install -e ".[dev,ml]"
