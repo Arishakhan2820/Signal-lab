@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signal Lab — an ML learning demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#fff;--card:#f7f9fc;--line:#e2e8f0;--ink:#0f172a;--mut:#5b6678;--a:#1d4ed8;--soft:#eaf1ff;--dn:#94a3b8;--track:#e8edf4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:15px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+.wrap{max-width:1040px;margin:0 auto;padding:22px 18px 40px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-weight:600;font-size:18px}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--a);display:grid;place-items:center;color:#fff;font-size:15px}
+button{font:inherit;color:inherit;cursor:pointer}
+.notice{background:var(--soft);border:1px solid #cfdcff;color:#173a9a;border-radius:10px;padding:11px 14px;font-size:13.5px;margin-bottom:22px}
+h1{font-size:clamp(26px,4.6vw,38px);line-height:1.15;margin:4px 0 10px;font-weight:600;letter-spacing:-.01em}
+h1 span{color:var(--a)}
+.lead{color:var(--mut);max-width:620px;margin:0 0 22px}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:0 0 14px;font-weight:600}
+.f{margin-bottom:16px}.f>div{display:flex;justify-content:space-between;font-weight:500;margin-bottom:6px}.f output{color:var(--a);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--a);height:24px}
+.seg{display:flex;gap:4px;background:var(--track);padding:3px;border-radius:10px}
+.seg button{flex:1;border:0;background:none;padding:7px 6px;border-radius:8px;color:var(--mut);font-weight:500}
+.seg button[aria-pressed=true]{background:var(--a);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+details{border-top:1px solid var(--line);padding-top:12px;margin-top:6px}summary{cursor:pointer;color:var(--mut);font-weight:500}
+.adv{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:12px}
+.adv label{display:block;font-size:12px;color:var(--mut)}.adv input,.adv select{width:100%;margin-top:3px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;color:var(--ink);font:inherit}
+.gauge{display:grid;place-items:center;position:relative;margin:2px 0 6px}
+.gauge svg{width:190px;height:190px;transform:rotate(-90deg)}
+.gauge .t{fill:none;stroke:var(--track);stroke-width:10}.gauge .p{fill:none;stroke:var(--a);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .4s ease}
+.gauge .tick{stroke:var(--ink);stroke-width:2.5}
+.gv{position:absolute;text-align:center}.gv b{display:block;font:600 40px/1 Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums}.gv small{color:var(--mut);font-size:12px}
+.delta{text-align:center;color:var(--mut);margin:0 0 14px}.delta b{color:var(--ink)}
+.bar{display:grid;grid-template-columns:128px 1fr 44px;align-items:center;gap:8px;font-size:12.5px;margin:6px 0;color:var(--mut)}
+.bar i{display:block;height:8px;border-radius:4px;background:var(--track);position:relative;overflow:hidden}.bar i::after{content:"";position:absolute;top:0;bottom:0;width:var(--w);left:var(--l);background:var(--c)}
+.bar span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.check{background:var(--card);border-left:3px solid var(--a);border-radius:8px;padding:12px 14px;font-size:13.5px;margin-top:14px;color:var(--ink)}
+.how{margin-top:16px}.how ol{margin:0;padding-left:20px;color:var(--ink)}.how li{margin:8px 0}.how p{color:var(--mut);margin:12px 0 0;font-size:14px}
+.small{color:var(--mut);font-size:13px}footer{margin-top:24px;color:var(--mut);font-size:13px;text-align:center}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+header{flex-wrap:wrap}nav{margin-left:auto;display:flex;gap:2px;overflow-x:auto;max-width:100%}nav button{border:0;background:none;padding:8px 12px;color:var(--mut);border-bottom:2px solid transparent;font-weight:500;white-space:nowrap}nav button[aria-selected=true]{color:var(--a);border-color:var(--a)}
+[hidden]{display:none!important}.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;color:var(--ink);font-size:13px}.chip:hover{border-color:var(--a);color:var(--a)}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;font-weight:500}th{color:var(--mut);font-size:12px}td:first-child,th:first-child{text-align:left}
+.cm{display:grid;grid-template-columns:1fr 1fr;gap:6px}.cm div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:12.5px;color:var(--mut)}.cm b{display:block;font-size:24px;color:var(--ink)}.cm .hit{background:var(--soft)}
+.hist{display:flex;align-items:flex-end;gap:4px;height:130px}.hist>div{flex:1;display:flex;align-items:flex-end;gap:1px;height:100%}.hist i{flex:1;background:var(--dn);min-height:1px}.hist i.p{background:var(--a)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.cards h3{margin:0 0 6px;font-size:15px}.cards p{margin:0;color:var(--mut);font-size:13.5px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 16px}.stats>div{flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12.5px;color:var(--mut)}.stats b{display:block;font-size:26px;color:var(--a)}
+.tab{margin-top:6px}</style></head><body><div class="wrap">
+<header><div class="logo" aria-hidden="true">◐</div><b>Signal Lab</b>
+<nav role="tablist" id="tabs"><button role="tab" data-t="play" aria-selected="true">Playground</button><button role="tab" data-t="work" aria-selected="false">Does it work?</button><button role="tab" data-t="data" aria-selected="false">Data</button><button role="tab" data-t="eng" aria-selected="false">Under the hood</button></nav></header>
+<div class="notice" role="note"><b>Educational ML learning demo.</b> Not a medical tool; says nothing about any real person. All inputs are made-up what-ifs, and everything runs in your browser.</div>
+
+<section id="t-play" class="tab"><h1>Change an input, <span>watch the model react</span></h1>
+<p class="lead">A tiny model turns 20 survey fields into one number. Try a preset, then open “Show the math” to see exactly how that number is built.</p>
+<div class="grid"><section class="card"><h2>What-if inputs</h2>
+<div class="chips"><button class="chip" data-p="typ">Typical</button><button class="chip" data-p="low">Lower income</button><button class="chip" data-p="old">Older, small family</button><button class="chip" data-p="rnd">🎲 Random</button></div>
+<div class="f"><div>Sex (dataset code)</div><div class="seg" data-n="sex"><button data-v="0">0</button><button data-v="1">1</button></div></div>
+<div class="f"><div>Married (dataset code)</div><div class="seg" data-n="Married"><button data-v="0">0</button><button data-v="1">1</button></div></div>
+<div id="sl"></div>
+<div class="f"><div>Economic profile</div><div class="seg" id="econ"><button data-e="q1">Lower</button><button data-e="md">Typical</button><button data-e="q3">Higher</button></div></div>
+<details><summary>Advanced: all 20 inputs</summary><div class="adv" id="adv"></div></details></section>
+<section class="card" aria-live="polite"><h2>Model score</h2>
+<div class="gauge"><svg viewBox="0 0 140 140" aria-hidden="true"><circle class="t" cx="70" cy="70" r="54"/><circle class="p" id="ring" cx="70" cy="70" r="54" stroke-dasharray="339.3" stroke-dashoffset="339.3"/><line class="tick" id="tick" x1="70" y1="10" x2="70" y2="22" style="transform-origin:70px 70px"/></svg><div class="gv"><b id="sc">0.00</b><small>0 to 1</small></div></div>
+<p class="delta" id="dl"></p>
+<h2>Biggest pushes</h2><p class="small" style="margin:-6px 0 6px">Blue pushes the score up, gray pushes it down.</p><div id="bars"></div>
+<details><summary>Show the math</summary><p class="small">Each push = weight × (your value − dataset average) ÷ spread. Add all pushes to the starting value, then squeeze with a sigmoid to get 0–1.</p><div style="overflow-x:auto"><table id="math"></table></div></details>
+<p class="small">The black tick marks the score of the typical profile. The score is not a probability.</p></section></div></section>
+
+<section id="t-work" class="tab" hidden><h1>Does the model <span>actually work?</span></h1>
+<p class="lead">The honest test: score rows the model has never seen (5-fold, grouped by village) and compare with guessing. Real numbers from this project’s run.</p>
+<div class="grid"><section class="card"><h2>ROC curve</h2><svg id="roc" viewBox="0 0 200 200" style="width:100%;max-width:300px;display:block;margin:auto"></svg>
+<p class="small">Blue = our model. Dashed = coin flip. A good model bends far toward the top-left corner; ours hugs the dashed line.</p></section>
+<section class="card"><h2>Try a cut-off</h2><div class="f"><div>Flag rows scoring above <output id="tv"></output></div><input id="ts" type="range" min="0" max="18" value="9"></div>
+<div class="cm" id="cm"></div><p id="ct" class="small"></p></section></div>
+<section class="card" style="margin-top:16px"><h2>Compared with guessing</h2><div class="stats"><div><b id="l20"></b>of all positives found in the top 20% of scores (random pick: 20%)</div><div><b id="auc"></b>ROC-AUC (coin flip: 0.50)</div><div><b id="base"></b>positive rate; precision of a guesser</div></div>
+<table id="cmp"></table><p class="small">Logistic regression and random forest both land near 0.5. Grouped and random splits agree, so we found no village leakage; the signal is simply weak. This is the lesson: always check before trusting a model.</p></section></section>
+
+<section id="t-data" class="tab" hidden><h1>What the data <span>looks like</span></h1>
+<p class="lead">Two groups (label 0 and label 1) are drawn on top of each other. If their shapes overlap, the field cannot tell them apart.</p>
+<section class="card"><div class="seg" id="hs" style="margin-bottom:14px"></div><div class="hist" id="hist"></div><div class="small" style="display:flex;justify-content:space-between"><span id="hlo"></span><span id="hhi"></span></div>
+<p class="small"><span style="color:var(--dn)">■</span> label 0 (<span id="c0"></span> rows) &nbsp; <span style="color:var(--a)">■</span> label 1 (<span id="c1"></span> rows). Bars show the share of each group.</p></section>
+<section class="card" style="margin-top:16px"><h2>Data facts</h2><p class="small">1,429 rows, 20 numeric fields, one label whose meaning is not documented. No symptoms or questionnaire answers. Source and licence unverified, so the file is not published here.</p></section></section>
+
+<section id="t-eng" class="tab" hidden><h1>Under <span>the hood</span></h1>
+<p class="lead">This demo sits on top of a security-first backend built as a portfolio project.</p>
+<div class="stats"><div><b>53</b>automated tests</div><div><b>11</b>RLS-protected tables</div><div><b>20</b>API endpoints</div><div><b>0</b>real user data</div></div>
+<div class="cards">
+<div class="card"><h3>Secure sessions</h3><p>HttpOnly cookies, CSRF tokens bound to the session, Origin checks, refresh single-flight, server-side revocation checks.</p></div>
+<div class="card"><h3>Row-level security</h3><p>PostgreSQL RLS forced on every table. Tests prove one user cannot read another’s rows.</p></div>
+<div class="card"><h3>Consent and erasure</h3><p>Withdrawing consent stops processing instantly and starts a tracked, retryable deletion workflow with backup-restore replay.</p></div>
+<div class="card"><h3>Safety gates</h3><p>Assessments and inference stay disabled until review gates are approved. No fabricated scores or risk labels.</p></div>
+<div class="card"><h3>Honest ML</h3><p>Grouped cross-validation, leakage check, model card from a real run, results reported even when weak.</p></div>
+<div class="card"><h3>Engineering hygiene</h3><p>Typed config with production guards, redacted logs, OpenAPI contract test, CI with secret scanning, written threat model.</p></div></div>
+<p class="small" style="margin-top:14px">Stack: FastAPI · PostgreSQL + RLS · Supabase Auth · scikit-learn · vanilla JS. Not built yet: Google login, email, admin dashboard.</p></section>
+
+<footer>If you are struggling or in danger, contact local emergency services or someone you trust. This demo does not monitor anyone.</footer></div>
+<script>
+const M={"f":[{"n":"sex","b":1,"lo":0.0,"q1":1.0,"md":1.0,"q3":1.0,"hi":1.0,"mu":0.918,"sd":0.274,"w":-0.0126},{"n":"Age","b":0,"lo":17.0,"q1":25.0,"md":30.0,"q3":42.0,"hi":91.0,"mu":34.777,"sd":13.981,"w":0.1713},{"n":"Married","b":1,"lo":0.0,"q1":1.0,"md":1.0,"q3":1.0,"hi":1.0,"mu":0.773,"sd":0.419,"w":-0.0852},{"n":"Number_children","b":0,"lo":0.0,"q1":2.0,"md":3.0,"q3":4.0,"hi":11.0,"mu":2.883,"sd":1.874,"w":-0.0384},{"n":"education_level","b":0,"lo":1.0,"q1":8.0,"md":9.0,"q3":10.0,"hi":19.0,"mu":8.687,"sd":2.923,"w":-0.1722},{"n":"total_members","b":0,"lo":1.0,"q1":4.0,"md":5.0,"q3":6.0,"hi":12.0,"mu":4.969,"sd":1.786,"w":0.217},{"n":"gained_asset","b":0,"lo":325112.0,"q1":23269824.0,"md":28912201.0,"q3":37172832.0,"hi":99127548.0,"mu":33634477.74,"sd":20031524.745,"w":0.0151},{"n":"durable_asset","b":0,"lo":162556.0,"q1":19298521.0,"md":22861940.0,"q3":26569498.0,"hi":99615601.0,"mu":27172956.896,"sd":18150367.535,"w":0.1327},{"n":"save_asset","b":0,"lo":172966.0,"q1":23399979.0,"md":23399979.0,"q3":23399979.0,"hi":99926758.0,"mu":27424707.838,"sd":17745162.086,"w":0.0742},{"n":"living_expenses","b":0,"lo":262919.0,"q1":20886711.0,"md":26692283.0,"q3":38436887.0,"hi":99295282.0,"mu":32482565.523,"sd":21007929.76,"w":-0.061},{"n":"other_expenses","b":0,"lo":172966.0,"q1":20980135.0,"md":28203066.0,"q3":40518887.0,"hi":99823799.0,"mu":33666324.451,"sd":21695060.598,"w":0.0409},{"n":"incoming_salary","b":1,"lo":0.0,"q1":0.0,"md":0.0,"q3":0.0,"hi":1.0,"mu":0.18,"sd":0.384,"w":0.0896},{"n":"incoming_own_farm","b":1,"lo":0.0,"q1":0.0,"md":0.0,"q3":1.0,"hi":1.0,"mu":0.252,"sd":0.434,"w":-0.0673},{"n":"incoming_business","b":1,"lo":0.0,"q1":0.0,"md":0.0,"q3":0.0,"hi":1.0,"mu":0.108,"sd":0.31,"w":-0.1209},{"n":"incoming_no_business","b":1,"lo":0.0,"q1":0.0,"md":0.0,"q3":1.0,"hi":1.0,"mu":0.26,"sd":0.439,"w":0.0074},{"n":"incoming_agricultural","b":0,"lo":325112.0,"q1":23222287.0,"md":30028818.0,"q3":40038424.0,"hi":99789095.0,"mu":34510389.118,"sd":20771190.244,"w":-0.0697},{"n":"farm_expenses","b":0,"lo":271505.0,"q1":22799659.0,"md":31363432.0,"q3":43485844.0,"hi":99651194.0,"mu":35491525.541,"sd":21116323.08,"w":-0.0086},{"n":"labor_primary","b":1,"lo":0.0,"q1":0.0,"md":0.0,"q3":0.0,"hi":1.0,"mu":0.213,"sd":0.41,"w":-0.1368},{"n":"lasting_investment","b":0,"lo":74292.0,"q1":20019113.0,"md":28411718.0,"q3":39826862.0,"hi":99446667.0,"mu":32992215.082,"sd":21208784.579,"w":-0.0453},{"n":"no_lasting_investmen","b":0,"lo":126312.0,"q1":20642033.0,"md":28292707.0,"q3":41517625.0,"hi":99651194.0,"mu":33529516.834,"sd":21452037.894,"w":0.1655}],"b0":-0.0598,"base":0.167,"n":1429,"auc":0.551,"pr":0.194},D={"roc":[[0.0,0.0],[0.028,0.05],[0.065,0.092],[0.1,0.13],[0.132,0.176],[0.168,0.21],[0.202,0.256],[0.228,0.29],[0.285,0.319],[0.332,0.374],[0.362,0.42],[0.428,0.462],[0.455,0.5],[0.471,0.534],[0.507,0.567],[0.542,0.597],[0.566,0.626],[0.617,0.664],[0.636,0.697],[0.672,0.718],[0.705,0.748],[0.751,0.777],[0.783,0.811],[0.807,0.853],[0.836,0.887],[0.883,0.929],[0.923,0.962],[1.0,1.0]],"thr":[[0.306,232,1125,6,66],[0.343,223,1063,15,128],[0.371,213,1001,25,190],[0.389,197,946,41,245],[0.408,184,888,54,303],[0.424,176,824,62,367],[0.437,167,763,71,428],[0.448,152,705,86,486],[0.458,142,644,96,547],[0.473,130,585,108,606],[0.488,116,527,122,664],[0.501,105,467,133,724],[0.519,93,407,145,784],[0.536,80,349,158,842],[0.555,70,288,168,903],[0.579,59,227,179,964],[0.607,47,168,191,1023],[0.635,29,114,209,1077],[0.682,16,56,222,1135]],"lift":{"10":0.122,"20":0.248,"30":0.336,"50":0.546},"hist":{"Age":{"lo":17.0,"hi":91.0,"c0":[307,337,229,115,76,63,35,21,5,3],"c1":[48,61,44,21,26,13,8,8,7,2]},"Number_children":{"lo":0.0,"hi":11.0,"c0":[288,243,256,189,107,65,25,15,2,1],"c1":[53,51,51,40,20,9,10,2,1,1]},"education_level":{"lo":1.0,"hi":19.0,"c0":[61,39,73,220,256,412,63,60,5,2],"c1":[25,11,25,47,38,65,16,9,1,1]},"total_members":{"lo":1.0,"hi":12.0,"c0":[97,124,170,500,122,76,52,22,20,8],"c1":[17,12,33,111,23,22,9,8,2,1]}},"cls":[1191,238],"cmp":{"logistic_regression":{"random_stratified_5fold":{"roc_auc":0.551,"pr_auc":0.194,"balanced_accuracy":0.526,"precision@0.5":0.185,"recall@0.5":0.445},"grouped_by_village_5fold":{"roc_auc":0.542,"pr_auc":0.196,"balanced_accuracy":0.522,"precision@0.5":0.182,"recall@0.5":0.441}},"random_forest":{"random_stratified_5fold":{"roc_auc":0.533,"pr_auc":0.195,"balanced_accuracy":0.495,"precision@0.5":0.143,"recall@0.5":0.05},"grouped_by_village_5fold":{"roc_auc":0.507,"pr_auc":0.189,"balanced_accuracy":0.503,"precision@0.5":0.182,"recall@0.5":0.059}}}};const F=M.f,by=Object.fromEntries(F.map(f=>[f.n,f]));
+const DEMO=['sex','Age','Married','Number_children','education_level','total_members'],$=id=>document.getElementById(id),$$=s=>document.querySelectorAll(s);
+const v={},MON=F.filter(f=>!f.b&&!DEMO.includes(f.n));F.forEach(f=>v[f.n]=f.md);
+const lab=n=>n.replace(/_/g,' ').replace(/^./,c=>c.toUpperCase()),fmt=n=>Math.abs(n)>=1e5?n.toExponential(2):String(Math.round(n*100)/100);
+const calc=x=>{let z=M.b0;const c=F.map(f=>{const k=f.w*(x[f.n]-f.mu)/f.sd;z+=k;return[f.n,k]});return{s:1/(1+Math.exp(-z)),c}};
+const REF=calc(Object.fromEntries(F.map(f=>[f.n,f.md]))).s;
+$('tick').style.transform='rotate('+REF*360+'deg)';
+$('sl').innerHTML=['Age','Number_children','education_level','total_members'].map(n=>{const f=by[n];return`<div class="f"><div><label for="s_${n}">${lab(n)}</label><output id="o_${n}"></output></div><input id="s_${n}" type="range" data-n="${n}" min="${f.lo}" max="${f.hi}" step="1"></div>`}).join('');
+$('adv').innerHTML=F.map(f=>f.b?`<label>${lab(f.n)}<select data-n="${f.n}"><option>0</option><option>1</option></select></label>`:`<label>${lab(f.n)}<input type="number" data-n="${f.n}" min="${f.lo}" max="${f.hi}"></label>`).join('');
+function sync(){$$('[data-n]').forEach(e=>{const n=e.dataset.n;if(e.classList.contains('seg'))e.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===v[n]));else e.value=v[n]});DEMO.forEach(n=>{const o=$('o_'+n);if(o)o.textContent=v[n]});$$('#econ button').forEach(b=>b.setAttribute('aria-pressed',MON.every(f=>v[f.n]===f[b.dataset.e])))}
+function draw(){const r=calc(v);$('ring').style.strokeDashoffset=339.3*(1-r.s);$('sc').textContent=r.s.toFixed(2);const d=r.s-REF;
+$('dl').innerHTML=Math.abs(d)<.005?'Same as the <b>typical profile</b> ('+REF.toFixed(2)+')':'<b>'+(d>0?'+':'−')+Math.abs(d).toFixed(2)+'</b> vs the typical profile ('+REF.toFixed(2)+')';
+const s=[...r.c].sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])),top=s.slice(0,5),mx=Math.max(.05,...top.map(t=>Math.abs(t[1])));
+$('bars').innerHTML=top.map(([n,k])=>{const w=Math.abs(k)/mx*50;return`<div class="bar"><span>${lab(n)}</span><i style="--w:${w}%;--l:${k>=0?50:50-w}%;--c:${k>=0?'var(--a)':'var(--dn)'}"></i><span>${k>=0?'+':'−'}${Math.abs(k).toFixed(2)}</span></div>`}).join('');
+$('math').innerHTML='<tr><th>Input</th><th>Your value</th><th>Average</th><th>Weight</th><th>Push</th></tr>'+s.map(([n,k])=>`<tr><td>${lab(n)}</td><td>${fmt(v[n])}</td><td>${fmt(by[n].mu)}</td><td>${by[n].w}</td><td>${k>=0?'+':''}${k.toFixed(2)}</td></tr>`).join('')+`<tr><td colspan="4">Start value + sigmoid → score</td><td><b>${M.b0} → ${r.s.toFixed(2)}</b></td></tr>`}
+function upd(){sync();draw()}
+const PRE={typ:()=>F.forEach(f=>v[f.n]=f.md),low:()=>{PRE.typ();MON.forEach(f=>v[f.n]=f.q1)},old:()=>{PRE.typ();v.Age=60;v.total_members=3;v.Number_children=5},
+rnd:()=>F.forEach(f=>v[f.n]=f.b?+(Math.random()<f.mu):Math.round(f.q1+Math.random()*(f.q3-f.q1)))};
+document.addEventListener('input',e=>{const n=e.target.dataset&&e.target.dataset.n;if(n&&by[n]&&e.target.value!==''){v[n]=+e.target.value;upd()}});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const s=b.closest('.seg');if(s&&s.dataset.n){v[s.dataset.n]=+b.dataset.v;upd()}if(b.dataset.e){MON.forEach(f=>v[f.n]=f[b.dataset.e]);upd()}if(b.dataset.p){PRE[b.dataset.p]();upd()}
+if(b.dataset.t){$$('#tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));$$('.tab').forEach(t=>t.hidden=t.id!=='t-'+b.dataset.t)}if(b.dataset.h){hist(b.dataset.h)}});
+// Does it work?
+const R=D.roc,auc=R.slice(1).reduce((a,p,i)=>a+(p[0]-R[i][0])*(p[1]+R[i][1])/2,0),P=n=>10+n*180;
+$('roc').innerHTML=`<rect x="10" y="10" width="180" height="180" fill="none" stroke="var(--line)"/><line x1="10" y1="190" x2="190" y2="10" stroke="var(--mut)" stroke-dasharray="4 4"/><polyline fill="none" stroke="var(--a)" stroke-width="2.5" points="${R.map(p=>P(p[0])+','+(200-P(p[1]))).join(' ')}"/><text x="100" y="199" font-size="8" text-anchor="middle" fill="var(--mut)">false alarms →</text><text x="4" y="100" font-size="8" fill="var(--mut)" transform="rotate(-90 4 100)" text-anchor="middle">hits →</text>`;
+$('auc').textContent=auc.toFixed(2);$('base').textContent=(D.cls[1]/(D.cls[0]+D.cls[1])).toFixed(2);$('l20').textContent=Math.round(D.lift['20']*100)+'%';
+function cut(){const [t,tp,fp,fn,tn]=D.thr[$('ts').value],fl=tp+fp,N=tp+fp+fn+tn,pr=fl?tp/fl:0,rc=tp/(tp+fn);$('tv').textContent=t.toFixed(2);
+$('cm').innerHTML=`<div class="hit"><b>${tp}</b>flagged, truly label 1</div><div><b>${fp}</b>flagged, label 0</div><div><b>${fn}</b>missed label 1</div><div class="hit"><b>${tn}</b>correctly not flagged</div>`;
+$('ct').textContent=`Of ${fl} flagged rows, ${Math.round(pr*100)}% are label 1; a random pick of the same size would give ${Math.round(D.cls[1]/N*100)}%. It finds ${Math.round(rc*100)}% of all label-1 rows. Move the slider: catching more always means more false alarms.`}
+$('ts').oninput=cut;cut();
+$('cmp').innerHTML='<tr><th>Model</th><th>Split</th><th>ROC-AUC</th><th>PR-AUC</th></tr>'+Object.entries(D.cmp).flatMap(([n,s])=>Object.entries(s).map(([k,m])=>`<tr><td>${lab(n)}</td><td>${k.includes('village')?'by village':'random'}</td><td>${m.roc_auc}</td><td>${m.pr_auc}</td></tr>`)).join('');
+// Data
+const HN=Object.keys(D.hist);$('hs').innerHTML=HN.map((n,i)=>`<button data-h="${n}">${lab(n)}</button>`).join('');$('c0').textContent=D.cls[0];$('c1').textContent=D.cls[1];
+function hist(n){const h=D.hist[n],s0=h.c0.reduce((a,b)=>a+b),s1=h.c1.reduce((a,b)=>a+b),mx=Math.max(...h.c0.map(c=>c/s0),...h.c1.map(c=>c/s1));
+$('hist').innerHTML=h.c0.map((c,i)=>`<div><i style="height:${c/s0/mx*100}%"></i><i class="p" style="height:${h.c1[i]/s1/mx*100}%"></i></div>`).join('');$('hlo').textContent=h.lo;$('hhi').textContent=h.hi;$$('#hs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.h===n))}
+hist(HN[0]);upd();
+</script></body></html>

@@ -1,0 +1,50 @@
+{
+  "seed": 42,
+  "audit": {
+    "rows": 1429,
+    "columns": 23,
+    "villages": 255,
+    "positive_rate": 0.1666,
+    "null_cells_by_column": {
+      "no_lasting_investmen": 20
+    },
+    "duplicate_rows_excluding_ids": 45,
+    "rows_per_village_median": 4.0,
+    "share_of_multirow_villages_with_identical_asset_values": 0.066
+  },
+  "baseline_pr_auc_if_random": 0.167,
+  "models": {
+    "logistic_regression": {
+      "random_stratified_5fold": {
+        "roc_auc": 0.551,
+        "pr_auc": 0.194,
+        "balanced_accuracy": 0.526,
+        "precision@0.5": 0.185,
+        "recall@0.5": 0.445
+      },
+      "grouped_by_village_5fold": {
+        "roc_auc": 0.542,
+        "pr_auc": 0.196,
+        "balanced_accuracy": 0.522,
+        "precision@0.5": 0.182,
+        "recall@0.5": 0.441
+      }
+    },
+    "random_forest": {
+      "random_stratified_5fold": {
+        "roc_auc": 0.533,
+        "pr_auc": 0.195,
+        "balanced_accuracy": 0.495,
+        "precision@0.5": 0.143,
+        "recall@0.5": 0.05
+      },
+      "grouped_by_village_5fold": {
+        "roc_auc": 0.507,
+        "pr_auc": 0.189,
+        "balanced_accuracy": 0.503,
+        "precision@0.5": 0.182,
+        "recall@0.5": 0.059
+      }
+    }
+  }
+}
